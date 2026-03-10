@@ -1,0 +1,155 @@
+<view class="container">
+  <!-- 加载状态 -->
+  <view class="loading-state" wx:if="{{loading}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 错误状态 -->
+  <view class="error-state" wx:if="{{error}}">
+    <text class="error-icon">⚠️</text>
+    <text class="error-text">{{error}}</text>
+    <button class="retry-btn" bindtap="loadAssignmentDetail">重试</button>
+  </view>
+
+  <!-- 作业详情内容 -->
+  <block wx:if="{{!loading && !error && assignment}}">
+    <!-- 头部信息 -->
+    <view class="header-card">
+      <view class="header-top">
+        <text class="assignment-title">{{assignment.title}}</text>
+        <view class="status-badge {{assignment.statusClass}}">{{assignment.statusText}}</view>
+      </view>
+
+      <view class="time-status" wx:if="{{assignment.timeStatus}}">
+        <text class="time-icon">⏰</text>
+        <text class="time-text {{assignment.statusClass}}">{{assignment.timeStatus}}</text>
+      </view>
+    </view>
+
+    <!-- 作业信息 -->
+    <view class="info-card">
+      <view class="info-title">作业信息</view>
+
+      <view class="info-row">
+        <text class="info-label">题目数量</text>
+        <text class="info-value">{{assignment.question_count}} 题</text>
+      </view>
+
+      <view class="info-row">
+        <text class="info-label">总分</text>
+        <text class="info-value">{{assignment.total_score}} 分</text>
+      </view>
+
+      <view class="info-row">
+        <text class="info-label">开始时间</text>
+        <text class="info-value">{{assignment.formattedStartTime}}</text>
+      </view>
+
+      <view class="info-row">
+        <text class="info-label">截止时间</text>
+        <text class="info-value {{assignment.statusClass === 'ended' ? 'ended' : ''}}">{{assignment.formattedEndTime}}</text>
+      </view>
+
+      <view class="info-row" wx:if="{{assignment.appeal_end_time}}">
+        <text class="info-label">申诉截止</text>
+        <text class="info-value">{{assignment.formattedAppealTime}}</text>
+      </view>
+    </view>
+
+    <!-- 规则配置 -->
+    <view class="rules-card">
+      <view class="info-title">提交规则</view>
+      <view class="rules-list">
+        <view class="rule-item">
+          <text class="rule-icon">{{assignment.allow_resubmit ? '✓' : '✗'}}</text>
+          <text class="rule-text {{assignment.allow_resubmit ? 'enabled' : 'disabled'}}">
+            {{assignment.allow_resubmit ? '允许' : '不允许'}}重新提交
+          </text>
+        </view>
+        <view class="rule-item">
+          <text class="rule-icon">{{assignment.allow_late ? '✓' : '✗'}}</text>
+          <text class="rule-text {{assignment.allow_late ? 'enabled' : 'disabled'}}">
+            {{assignment.allow_late ? '允许' : '不允许'}}逾期提交
+          </text>
+        </view>
+        <view class="rule-item" wx:if="{{assignment.allow_late}}">
+          <text class="rule-icon">📋</text>
+          <text class="rule-text">逾期计分规则：{{assignment.late_score_rule}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 提交状态卡片 -->
+    <view class="submission-card" wx:if="{{hasSubmitted}}">
+      <view class="info-title">我的提交</view>
+
+      <view class="submission-status">
+        <text class="status-label">状态：</text>
+        <text class="status-value {{submission.status}}">
+          {{submission.status === 'processing' ? '批改中...' :
+            submission.status === 'completed' ? '已完成' :
+            submission.status === 'failed' ? '批改失败' : '已提交'}}
+        </text>
+      </view>
+
+      <view class="submission-score" wx:if="{{submission.status === 'completed'}}">
+        <text class="score-label">得分：</text>
+        <text class="score-value">{{submission.total_score}}</text>
+        <text class="score-total">/ {{submission.max_total_score}} 分</text>
+      </view>
+
+      <!-- 进度条（批改中） -->
+      <view class="processing-hint" wx:if="{{submission.status === 'processing'}}">
+        <view class="progress-bar-animation">
+          <view class="progress-fill"></view>
+        </view>
+        <text class="processing-text">AI正在批改中，请稍候...</text>
+      </view>
+
+      <view class="submission-actions">
+        <button class="action-btn primary" wx:if="{{submission.status === 'completed'}}" bindtap="viewResult">
+          查看批改结果
+        </button>
+        <button class="action-btn secondary" wx:if="{{assignment.allow_resubmit && assignment.canSubmit}}" bindtap="resubmit">
+          重新提交
+        </button>
+      </view>
+    </view>
+
+    <!-- 提交区域 -->
+    <view class="submit-card" wx:if="{{!hasSubmitted && assignment.canSubmit}}">
+      <view class="info-title">提交作业</view>
+      <text class="submit-hint">请拍照或选择作业图片上传</text>
+
+      <!-- 图片预览 -->
+      <view class="image-preview" wx:if="{{imageUrl}}" bindtap="previewImage">
+        <image src="{{imageUrl}}" mode="aspectFit" class="preview-img"/>
+        <view class="preview-overlay">
+          <text class="preview-text">点击预览</text>
+        </view>
+      </view>
+
+      <!-- 上传按钮 -->
+      <button class="upload-btn {{isUploading ? 'disabled' : ''}}" bindtap="chooseAndSubmit" disabled="{{isUploading}}">
+        <text class="btn-icon">{{isUploading ? '⏳' : imageUrl ? '🔄' : '📷'}}</text>
+        <text class="btn-text">{{isUploading ? '上传中...' : imageUrl ? '重新选择' : '拍照/选择图片'}}</text>
+      </button>
+
+      <!-- 提交按钮 -->
+      <button class="submit-btn {{!imageUrl || isUploading ? 'disabled' : ''}}" bindtap="submitAssignment" disabled="{{!imageUrl || isUploading}}" wx:if="{{imageUrl && !isUploading}}">
+        确认提交
+      </button>
+    </view>
+
+    <!-- 不可提交提示 -->
+    <view class="cannot-submit-card" wx:if="{{!hasSubmitted && !assignment.canSubmit}}">
+      <text class="cannot-icon">🚫</text>
+      <text class="cannot-text">{{assignment.statusText === '已截止' ? '作业已截止，无法提交' : '作业尚未开始，请耐心等待'}}</text>
+    </view>
+  </block>
+
+  <!-- 返回按钮 -->
+  <view class="footer-actions">
+    <button class="back-btn" bindtap="goBack">返回作业列表</button>
+  </view>
+</view>

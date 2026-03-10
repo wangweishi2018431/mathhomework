@@ -1,0 +1,50 @@
+<view class="container">
+  <view class="result-header">
+    <text class="result-title">批改结果</text>
+    <view class="score-badge">
+      <text class="score-value">{{result.total_score}}</text>
+      <text class="score-total">/ {{result.max_total_score}} 分</text>
+    </view>
+  </view>
+
+  <view class="questions-list" wx:if="{{result.questions && result.questions.length > 0}}">
+    <view class="question-card" wx:for="{{result.questions}}" wx:key="q_num">
+      <view class="question-header">
+        <text class="q-num">第 {{item.q_num}} 题</text>
+        <view class="status-tag {{item._statusClass}}">{{item._statusText}}</view>
+      </view>
+
+      <view class="score-row">
+        <text class="score-text">得分：{{item.score}} / {{item.max_score}} 分</text>
+        <view class="score-bar-container">
+          <view class="score-bar-bg">
+            <view class="score-bar-fill {{item._statusClass}}" style="width: {{(item.score / item.max_score) * 100}}%"></view>
+          </view>
+        </view>
+      </view>
+
+      <view class="content-section" wx:if="{{item.content}}">
+        <text class="section-label">题目</text>
+        <text class="section-content">{{item.content}}</text>
+      </view>
+
+      <view class="content-section" wx:if="{{item.student_ans}}">
+        <text class="section-label">学生答案</text>
+        <text class="section-content">{{item.student_ans}}</text>
+      </view>
+
+      <view class="analysis-section" wx:if="{{item.analysis}}">
+        <text class="section-label">批改分析</text>
+        <text class="section-content">{{item.analysis}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty-state" wx:else>
+    <text class="empty-text">暂无批改详情</text>
+  </view>
+
+  <view class="footer-actions">
+    <button class="back-btn" bindtap="goBack">返回作业详情</button>
+  </view>
+</view>

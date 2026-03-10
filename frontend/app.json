@@ -1,0 +1,21 @@
+{
+    "pages":  [
+                  "pages/index/index",
+                  "pages/teacher/index",
+                  "pages/admin/index",
+                  "pages/assignment/detail",
+                  "pages/assignment/result"
+              ],
+    "window":  {
+                   "navigationBarTextStyle":  "white",
+                   "navigationBarTitleText":  "AI数学作业批改",
+                   "navigationBarBackgroundColor":  "#2c9678"
+               },
+    "style":  "v2",
+    "componentFramework":  "glass-easel",
+    "sitemapLocation":  "sitemap.json",
+    "lazyCodeLoading":  "requiredComponents",
+    "usingComponents":  {
+                            "mp-html":  "mp-html"
+                        }
+}

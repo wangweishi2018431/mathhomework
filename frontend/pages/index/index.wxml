@@ -1,0 +1,160 @@
+<view class="container">
+  <!-- 顶部标题区 -->
+  <view class="header">
+    <text class="title">AI数学作业批改</text>
+    <text class="subtitle">拍照上传，秒出结果</text>
+    <button class="teacher-entry" size="mini" bindtap="goTeacherPage">教师端</button>
+  </view>
+
+  <!-- 学生登录区 -->
+  <view class="account-section">
+    <view class="account-card" wx:if="{{userProfile}}">
+      <view class="account-main">
+        <image wx:if="{{userProfile.avatarUrl}}" class="avatar" src="{{userProfile.avatarUrl}}" mode="aspectFill" />
+        <view wx:else class="avatar-fallback">学</view>
+        <view class="account-meta">
+          <text class="account-name">{{userProfile.nickName}}</text>
+          <text class="account-sub">已登录学生账号</text>
+        </view>
+      </view>
+      <button class="account-btn logout-btn" size="mini" bindtap="logoutStudent">退出</button>
+    </view>
+
+    <view class="account-card guest" wx:else>
+      <view class="account-meta">
+        <text class="account-name">未登录</text>
+        <text class="account-sub">请先授权微信信息，查看作业列表</text>
+      </view>
+      <button class="account-btn login-btn" bindtap="loginStudent">微信登录</button>
+    </view>
+  </view>
+
+  <!-- 我的作业列表 -->
+  <view class="assignment-section" wx:if="{{userProfile}}">
+    <view class="section-header">
+      <text class="section-title">我的作业</text>
+      <text class="section-sub">{{assignments.length}} 个待完成</text>
+    </view>
+
+    <!-- 作业列表 -->
+    <view class="assignment-list" wx:if="{{assignments.length > 0}}">
+      <view class="assignment-card {{item.statusClass}}" wx:for="{{assignments}}" wx:key="id" bindtap="goToAssignment" data-id="{{item.id}}">
+        <view class="assignment-main">
+          <view class="assignment-title-row">
+            <text class="assignment-title">{{item.title}}</text>
+            <view class="status-tag {{item.statusClass}}">{{item.statusText}}</view>
+          </view>
+
+          <view class="assignment-meta">
+            <text class="meta-item">{{item.question_count}}题</text>
+            <text class="meta-item">满分{{item.total_score}}分</text>
+          </view>
+
+          <!-- 倒计时 -->
+          <view class="countdown {{item.isNearDeadline ? 'near' : ''}}" wx:if="{{item.countdown}}">
+            <text class="countdown-icon">⏰</text>
+            <text class="countdown-text">{{item.countdown}}</text>
+          </view>
+
+          <!-- 班级进度 -->
+          <view class="class-progress">
+            <view class="progress-header">
+              <text class="progress-label">班级提交</text>
+              <text class="progress-value">{{item.progress}}</text>
+            </view>
+            <view class="progress-bar">
+              <view class="progress-fill" style="width: {{item.progressPercent}}%"></view>
+            </view>
+          </view>
+        </view>
+
+        <view class="assignment-arrow">›</view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-assignments" wx:if="{{assignments.length === 0 && !loadingAssignments}}">
+      <text class="empty-icon">🎉</text>
+      <text class="empty-text">暂无作业</text>
+      <text class="empty-sub">老师还没有布置作业，休息一下吧</text>
+    </view>
+
+    <!-- 加载中 -->
+    <view class="loading-state" wx:if="{{loadingAssignments}}">
+      <text class="loading-text">加载中...</text>
+    </view>
+  </view>
+
+  <!-- 快速批改入口 -->
+  <view class="quick-correct-section" wx:if="{{userProfile}}">
+    <view class="divider">
+      <text class="divider-text">或</text>
+    </view>
+    <button class="quick-correct-btn" bindtap="showQuickCorrect">
+      <text class="btn-icon">⚡</text>
+      <text class="btn-text">快速批改（无需作业）</text>
+    </button>
+  </view>
+
+  <!-- 快速批改弹窗 -->
+  <view class="quick-correct-modal" wx:if="{{showQuickCorrect}}">
+    <view class="modal-mask" bindtap="hideQuickCorrect"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">快速批改</text>
+        <text class="modal-close" bindtap="hideQuickCorrect">×</text>
+      </view>
+      <text class="modal-desc">直接上传作业图片，无需选择具体作业</text>
+
+      <!-- 拍照/上传按钮 -->
+      <view class="upload-section">
+        <button class="upload-btn {{isProcessing ? 'disabled' : ''}}" bindtap="chooseImage" disabled="{{isProcessing}}">
+          <view class="btn-content">
+            <text class="btn-icon">{{isProcessing ? '⏳' : '📷'}}</text>
+            <text class="btn-text">{{isProcessing ? '批改中...' : '拍照/上传作业'}}</text>
+          </view>
+        </button>
+      </view>
+
+      <!-- 状态提示 -->
+      <view class="status-section" wx:if="{{statusText}}">
+        <view class="status-dot {{statusClass}}"></view>
+        <text class="status-text">{{statusText}}</text>
+      </view>
+
+      <!-- 图片预览 -->
+      <view class="preview-section" wx:if="{{imageUrl}}">
+        <image class="preview-image" src="{{imageUrl}}" mode="widthFix" show-menu-by-longpress/>
+      </view>
+
+      <!-- 批改结果区域 -->
+      <view class="result-section" wx:if="{{result}}">
+        <view class="result-header">
+          <text class="result-title">批改结果</text>
+          <view class="score-badge">
+            <text class="score-value">{{result.total_score}}</text>
+            <text class="score-total">/{{result.max_total_score}}</text>
+          </view>
+        </view>
+
+        <!-- 题目批改详情 -->
+        <view class="questions-list">
+          <view class="question-card {{item.is_correct ? 'correct' : 'wrong'}}" wx:for="{{result.questions}}" wx:key="q_num">
+            <view class="question-header">
+              <text class="q-num">第{{item.q_num}}题</text>
+              <view class="status-tag {{item._statusClass}}">{{item._statusText}}</view>
+            </view>
+            <view class="score-detail">
+              <text class="score-text">{{item.score}}/{{item.max_score}}分</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部提示 -->
+  <view class="footer">
+    <text class="footer-text">Powered by AI Vision</text>
+  </view>
+</view>

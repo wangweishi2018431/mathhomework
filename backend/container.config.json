@@ -1,0 +1,18 @@
+{
+  "env": {
+    "AI_API_KEY": "请在微信云控制台配置",
+    "AI_API_BASE_URL": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+    "AI_MODEL_NAME": "qwen-vl-max"
+  },
+  "ports": [
+    {
+      "containerPort": 80,
+      "protocol": "TCP"
+    }
+  ],
+  "resources": {
+    "cpu": 1,
+    "memory": 2048
+  },
+  "command": "uvicorn app.main:app --host 0.0.0.0 --port 80"
+}

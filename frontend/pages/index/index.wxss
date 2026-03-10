@@ -1,0 +1,900 @@
+/**index.wxss**/
+page {
+  background-color: #f5f6fa;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.container {
+  padding: 40rpx 30rpx;
+  padding-bottom: 120rpx;
+}
+
+/* ===== 顶部标题区 ===== */
+.header {
+  text-align: center;
+  margin-bottom: 50rpx;
+}
+
+.title {
+  display: block;
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #2c9678;
+  margin-bottom: 16rpx;
+}
+
+.subtitle {
+  display: block;
+  font-size: 28rpx;
+  color: #888;
+}
+
+/* ===== 学生登录区 ===== */
+.account-section {
+  margin-bottom: 30rpx;
+}
+
+.account-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.account-card.guest {
+  border: 2rpx dashed #cfd8dc;
+  box-shadow: none;
+}
+
+.account-main {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.avatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+
+.avatar-fallback {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  margin-right: 16rpx;
+  background: linear-gradient(135deg, #2c9678 0%, #3db89f 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.account-meta {
+  min-width: 0;
+  flex: 1;
+}
+
+.account-name {
+  display: block;
+  font-size: 30rpx;
+  color: #1f2d3d;
+  font-weight: 600;
+}
+
+.account-sub {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #7b8794;
+}
+
+.account-btn {
+  flex-shrink: 0;
+  font-size: 24rpx;
+  border-radius: 999rpx;
+  padding: 0 24rpx;
+  line-height: 58rpx;
+  min-height: 58rpx;
+  border: none;
+}
+
+.account-btn::after {
+  border: none;
+}
+
+.login-btn {
+  background: #2c9678;
+  color: #fff;
+}
+
+.logout-btn {
+  background: #eef2f6;
+  color: #425466;
+}
+/* ===== 上传按钮区 ===== */
+.upload-section {
+  margin-bottom: 40rpx;
+}
+
+.upload-btn {
+  width: 100%;
+  height: 200rpx;
+  background: linear-gradient(135deg, #2c9678 0%, #3db89f 100%);
+  border-radius: 20rpx;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 32rpx rgba(44, 150, 120, 0.3);
+}
+
+.upload-btn::after {
+  border: none;
+}
+
+.upload-btn.disabled {
+  background: linear-gradient(135deg, #999 0%, #bbb 100%);
+  box-shadow: none;
+}
+
+.btn-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.btn-icon {
+  font-size: 64rpx;
+  margin-bottom: 12rpx;
+}
+
+.btn-text {
+  font-size: 36rpx;
+  color: #fff;
+  font-weight: 500;
+}
+
+/* ===== 状态提示 ===== */
+.status-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30rpx;
+  padding: 20rpx;
+  background: #fff;
+  border-radius: 12rpx;
+}
+
+.status-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  margin-right: 16rpx;
+}
+
+.status-dot.processing {
+  background-color: #f39c12;
+  animation: pulse 1.5s infinite;
+}
+
+.status-dot.completed {
+  background-color: #2ecc71;
+}
+
+.status-dot.error {
+  background-color: #e74c3c;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.status-text {
+  font-size: 28rpx;
+  color: #666;
+}
+
+/* ===== 图片预览 ===== */
+.preview-section {
+  margin-bottom: 40rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+}
+
+.preview-image {
+  width: 100%;
+  border-radius: 12rpx;
+}
+
+/* ===== 批改结果区域 ===== */
+.result-section {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.06);
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+  padding-bottom: 30rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.result-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.score-badge {
+  display: flex;
+  align-items: baseline;
+  background: linear-gradient(135deg, #2c9678 0%, #3db89f 100%);
+  padding: 16rpx 32rpx;
+  border-radius: 50rpx;
+}
+
+.score-value {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
+.score-total {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* 学生信息 */
+.student-info {
+  margin-bottom: 30rpx;
+  padding: 20rpx;
+  background: #f8f9fa;
+  border-radius: 12rpx;
+}
+
+.info-label {
+  font-size: 28rpx;
+  color: #888;
+}
+
+.info-value {
+  font-size: 30rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+/* ===== 分数进度条 ===== */
+.score-bar-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin: 0 20rpx;
+}
+
+.score-bar-bg {
+  flex: 1;
+  height: 16rpx;
+  background: #e0e0e0;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.score-bar-fill {
+  height: 100%;
+  border-radius: 8rpx;
+  transition: width 0.3s ease;
+}
+
+.score-bar-fill.good {
+  background: linear-gradient(90deg, #2ecc71, #27ae60);
+}
+
+.score-bar-fill.bad {
+  background: linear-gradient(90deg, #f39c12, #e74c3c);
+}
+
+.score-percent {
+  margin-left: 16rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #666;
+  min-width: 60rpx;
+  text-align: right;
+}
+
+.score-detail {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding: 0 30rpx;
+}
+
+.score-text {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.score-hint {
+  margin-left: 12rpx;
+  font-size: 24rpx;
+  color: #f39c12;
+  background: #fff9e6;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+}
+
+.status-tag.partial-tag {
+  background: #f39c12;
+  color: #fff;
+}
+
+/* ===== 题目列表 ===== */
+.questions-list {
+  margin-bottom: 30rpx;
+}
+
+.question-card {
+  margin-bottom: 30rpx;
+  padding: 30rpx;
+  border-radius: 16rpx;
+  background: #fff;
+  border: 2rpx solid #f0f0f0;
+}
+
+.question-card.correct {
+  border-color: #2ecc71;
+  background: #f0fff4;
+}
+
+.question-card.wrong {
+  border-color: #e74c3c;
+  background: #fff5f5;
+}
+
+.question-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid rgba(0, 0, 0, 0.05);
+}
+
+.q-num {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  flex: 1;
+}
+
+.q-score {
+  display: flex;
+  align-items: baseline;
+  margin-right: 20rpx;
+}
+
+.score {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.score.correct-score {
+  color: #2ecc71;
+}
+
+.score.wrong-score {
+  color: #e74c3c;
+}
+
+.max-score {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.status-tag {
+  padding: 8rpx 20rpx;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+}
+
+.correct-tag {
+  background: #2ecc71;
+  color: #fff;
+}
+
+.wrong-tag {
+  background: #e74c3c;
+  color: #fff;
+}
+
+/* 题目内容 */
+.question-body {
+  font-size: 28rpx;
+  line-height: 1.6;
+}
+
+/* ===== Towxml 公式渲染样式 ===== */
+.content-text {
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.8;
+}
+
+.content-text .latex {
+  display: inline-block;
+  margin: 4rpx 0;
+}
+
+.content-text .block-latex {
+  display: block;
+  text-align: center;
+  margin: 16rpx 0;
+  padding: 16rpx;
+  background: #f8f9fa;
+  border-radius: 8rpx;
+  overflow-x: auto;
+}
+
+.content-block {
+  margin-bottom: 20rpx;
+  padding: 20rpx;
+  background: #fff;
+  border-radius: 12rpx;
+}
+
+.analysis-block {
+  margin-top: 20rpx;
+  padding: 20rpx;
+  background: #fff9e6;
+  border-radius: 12rpx;
+  border-left: 6rpx solid #f39c12;
+}
+
+.block-label {
+  display: block;
+  font-size: 26rpx;
+  color: #888;
+  margin-bottom: 12rpx;
+  font-weight: 500;
+}
+
+.analysis-label {
+  color: #f39c12;
+}
+
+.content-text {
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.8;
+}
+
+.analysis-text {
+  color: #666;
+}
+
+/* ===== 数学文本样式 ===== */
+.math-text {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 30rpx;
+  line-height: 1.8;
+  letter-spacing: 0.5rpx;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+/* ===== 数学公式图片样式 ===== */
+.math-content {
+  padding: 0;
+  font-size: 28rpx;
+  line-height: 1.8;
+}
+
+.math-content rich-text {
+  display: block;
+}
+
+.math-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ===== 总结区 ===== */
+.summary {
+  text-align: center;
+  padding: 30rpx;
+  background: #f8f9fa;
+  border-radius: 16rpx;
+}
+
+.summary-text {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.summary-text.good {
+  color: #2ecc71;
+}
+
+.summary-text.medium {
+  color: #f39c12;
+}
+
+.summary-text.need-improve {
+  color: #e74c3c;
+}
+
+/* ===== 空状态 ===== */
+.empty-section {
+  text-align: center;
+  padding: 100rpx 40rpx;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  display: block;
+  margin-bottom: 30rpx;
+}
+
+.empty-text {
+  font-size: 30rpx;
+  color: #999;
+}
+
+/* ===== 底部 ===== */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 30rpx;
+  text-align: center;
+  background: #f5f6fa;
+}
+
+.footer-text {
+  font-size: 24rpx;
+  color: #aaa;
+}
+
+/* ===== 作业列表区域 ===== */
+.assignment-section {
+  margin-bottom: 30rpx;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding: 0 10rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1f2d3d;
+}
+
+.section-sub {
+  font-size: 24rpx;
+  color: #7b8794;
+}
+
+.assignment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.assignment-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(10, 26, 47, 0.06);
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.assignment-card.ended {
+  opacity: 0.7;
+}
+
+.assignment-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.assignment-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12rpx;
+}
+
+.assignment-title {
+  flex: 1;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1f2d3d;
+  margin-right: 16rpx;
+  line-height: 1.4;
+}
+
+.assignment-card .status-tag {
+  flex-shrink: 0;
+  font-size: 22rpx;
+  padding: 6rpx 12rpx;
+  border-radius: 8rpx;
+  font-weight: 500;
+}
+
+.assignment-card .status-tag.active {
+  background: #e8f5f0;
+  color: #2c9678;
+}
+
+.assignment-card .status-tag.near-deadline {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.assignment-card .status-tag.ended {
+  background: #ffe6e6;
+  color: #d64545;
+}
+
+.assignment-card .status-tag.draft {
+  background: #f0f4f8;
+  color: #66788a;
+}
+
+.assignment-meta {
+  display: flex;
+  gap: 24rpx;
+  margin-bottom: 12rpx;
+}
+
+.assignment-meta .meta-item {
+  font-size: 24rpx;
+  color: #7b8794;
+}
+
+.countdown {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  margin-bottom: 16rpx;
+}
+
+.countdown.near .countdown-text {
+  color: #f57c00;
+  font-weight: 500;
+}
+
+.countdown-icon {
+  font-size: 24rpx;
+}
+
+.countdown-text {
+  font-size: 24rpx;
+  color: #7b8794;
+}
+
+.class-progress {
+  background: #f8fafc;
+  border-radius: 12rpx;
+  padding: 16rpx;
+}
+
+.class-progress .progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.class-progress .progress-label {
+  font-size: 24rpx;
+  color: #7b8794;
+}
+
+.class-progress .progress-value {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #2c9678;
+}
+
+.class-progress .progress-bar {
+  height: 8rpx;
+  background: #e1e8ed;
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+
+.class-progress .progress-fill {
+  height: 100%;
+  background: linear-gradient(135deg, #2c9678 0%, #33b18f 100%);
+  border-radius: 4rpx;
+  transition: width 0.3s;
+}
+
+.assignment-arrow {
+  font-size: 40rpx;
+  color: #d8e0ea;
+  font-weight: 300;
+}
+
+/* 作业列表空状态 */
+.empty-assignments {
+  text-align: center;
+  padding: 60rpx 40rpx;
+  background: #fff;
+  border-radius: 16rpx;
+}
+
+.empty-assignments .empty-icon {
+  font-size: 64rpx;
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.empty-assignments .empty-text {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1f2d3d;
+  margin-bottom: 8rpx;
+  display: block;
+}
+
+.empty-assignments .empty-sub {
+  font-size: 24rpx;
+  color: #7b8794;
+}
+
+.loading-state {
+  text-align: center;
+  padding: 40rpx;
+}
+
+.loading-text {
+  font-size: 26rpx;
+  color: #7b8794;
+}
+
+/* ===== 快速批改区域 ===== */
+.quick-correct-section {
+  margin-bottom: 30rpx;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 2rpx;
+  background: #e1e8ed;
+}
+
+.divider-text {
+  padding: 0 20rpx;
+  font-size: 24rpx;
+  color: #9aa6b2;
+}
+
+.quick-correct-btn {
+  width: 100%;
+  background: #f8fafc;
+  border: 2rpx dashed #d8e0ea;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+}
+
+.quick-correct-btn::after {
+  border: none;
+}
+
+.quick-correct-btn .btn-icon {
+  font-size: 32rpx;
+}
+
+.quick-correct-btn .btn-text {
+  font-size: 28rpx;
+  color: #66788a;
+}
+
+/* ===== 快速批改弹窗 ===== */
+.quick-correct-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  position: relative;
+  margin: auto 40rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.modal-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #1f2d3d;
+}
+
+.modal-close {
+  font-size: 48rpx;
+  color: #9aa6b2;
+  line-height: 1;
+  padding: 0 10rpx;
+}
+
+.modal-desc {
+  display: block;
+  font-size: 26rpx;
+  color: #7b8794;
+  margin-bottom: 30rpx;
+}
+
+.teacher-entry {
+  margin-top: 20rpx;
+  font-size: 24rpx;
+  color: #2c9678;
+  background: transparent;
+  border: 1rpx solid #2c9678;
+  padding: 8rpx 20rpx;
+  line-height: 1.5;
+}
