@@ -1,18 +1,20 @@
 {
-  "env": {
-    "AI_API_KEY": "请在微信云控制台配置",
+  "containerPort": 8080,
+  "minNum": 0,
+  "maxNum": 10,
+  "cpu": 0.25,
+  "mem": 0.5,
+  "policyType": "cpu",
+  "policyThreshold": 60,
+  "envParams": {
+    "AI_API_KEY": "your_api_key_here",
     "AI_API_BASE_URL": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-    "AI_MODEL_NAME": "qwen-vl-max"
+    "AI_MODEL_NAME": "qwen-vl-max",
+    "SOLVE_API_KEY": "",
+    "SOLVE_API_BASE_URL": "",
+    "SOLVE_MODEL_NAME": ""
   },
-  "ports": [
-    {
-      "containerPort": 80,
-      "protocol": "TCP"
-    }
-  ],
-  "resources": {
-    "cpu": 1,
-    "memory": 2048
-  },
-  "command": "uvicorn app.main:app --host 0.0.0.0 --port 80"
+  "customLogs": "stdout",
+  "dataBaseName": "mathhomework",
+  "executeSQLs": []
 }

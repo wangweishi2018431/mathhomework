@@ -91,19 +91,25 @@ async def _chat_completion(
     api_base_url: str,
     model_name: str,
     temperature: float = 0.2,
-) -> dict:
-    """调用 OpenAI 兼容的 /chat/completions 接口并解析 JSON 响应。"""
+    return_raw: bool = False,
+) -> dict | str:
+    """调用 OpenAI 兼容的 /chat/completions 接口。
+
+    Args:
+        return_raw: 如果为 True，返回原始文本字符串；否则解析 JSON 并返回 dict。
+    """
     url = f"{api_base_url.rstrip('/')}/chat/completions"
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
     }
-    payload = {
+    payload: dict = {
         "model": model_name,
         "messages": messages,
         "temperature": temperature,
-        "response_format": {"type": "json_object"},
     }
+    if not return_raw:
+        payload["response_format"] = {"type": "json_object"}
 
     async with httpx.AsyncClient(timeout=_TIMEOUT) as client:
         try:
@@ -119,21 +125,19 @@ async def _chat_completion(
     body = resp.json()
     raw_content = body["choices"][0]["message"]["content"]
 
-    # 打印 AI 原始返回（强制输出）
-    print(f"\n{'='*50}")
-    print(f"第二步 AI 原始返回:\n{raw_content[:1500]}")
-    print(f"{'='*50}\n")
+    if return_raw:
+        return raw_content
+
+    # JSON 模式：解析并修正评分
+    logger.debug("AI raw response preview: %s", raw_content[:1500])
 
     data = _parse_json(raw_content)
-
-    # 强制修正评分：如果内容非空但给 0 分，给默认步骤分
     data = _force_step_scoring(data)
 
-    # 打印修正后的结果
-    print(f"\n修正后的分数:")
-    for q in data.get("questions", []):
-        print(f"  题{q.get('q_num')}: {q.get('score')}/{q.get('max_score')} - {q.get('analysis', '')[:50]}...")
-    print()
+    logger.debug("Corrected scores: %s", [
+        f"题{q.get('q_num')}: {q.get('score')}/{q.get('max_score')}"
+        for q in data.get("questions", [])
+    ])
 
     return data
 

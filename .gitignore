@@ -46,3 +46,12 @@ package-lock.json
 # 小程序构建输出
 miniprogram_npm/
 components/towxml/
+
+# 部署文件
+backend-deploy.zip
+
+# Claude 配置
+.claude/
+
+# Windows 空文件
+nul
