@@ -67,22 +67,51 @@ cloudbase fn deploy --env-id mathhomework-prod-xxx
 
 ## 第四步：配置环境变量
 
-部署成功后，需要配置 API Key 等敏感信息：
+### 当前方案（快速上线）
+
+云托管容器是**无状态**的，容器重启后文件会重置。因此需要在环境变量中配置基础 API 信息，确保服务能正常启动：
 
 1. 进入云托管 → 服务列表 → 点击 `math-api`
 2. 点击 **「版本配置」** → **「编辑」**
-3. 在 **「环境变量」** 区域添加：
+3. 在 **「环境变量」** 区域添加（JSON 格式）：
 
-| 变量名 | 值 |
-|--------|-----|
-| `AI_API_KEY` | 你的通义千问 API Key |
-| `AI_API_BASE_URL` | `https://dashscope.aliyuncs.com/compatible-mode/v1` |
-| `AI_MODEL_NAME` | `qwen-vl-max` |
-| `SOLVE_API_KEY` | （可选）Gemini/Claude API Key |
-| `SOLVE_API_BASE_URL` | （可选） |
-| `SOLVE_MODEL_NAME` | （可选） |
+```json
+{
+  "AI_VISION_API_KEY": "你的通义千问API_KEY",
+  "AI_VISION_API_BASE_URL": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+  "AI_VISION_MODEL_NAME": "qwen-vl-max"
+}
+```
+
+| 变量名 | 必填 | 说明 |
+|--------|------|------|
+| `AI_VISION_API_KEY` | ✅ | 通义千问 API Key（用于图片识别和批改） |
+| `AI_VISION_API_BASE_URL` | ✅ | `https://dashscope.aliyuncs.com/compatible-mode/v1` |
+| `AI_VISION_MODEL_NAME` | ✅ | `qwen-vl-max` |
+| `AI_TEXT_API_KEY` | 可选 | 纯文本模型 Key（默认与视觉模型相同） |
+| `SOLVE_API_KEY` | 可选 | 题目求解专用 Key（如 Gemini/Claude） |
 
 4. 点击 **「保存」** → **「重新部署」**
+
+### 关于后台管理配置
+
+项目已支持后台管理页面（`/pages/admin/index`）动态调整配置：
+- ✅ 启动时会读取**环境变量**作为默认配置
+- ✅ 后台管理可临时覆盖配置（保存在 `.env` 文件）
+- ⚠️ 但容器重启后，`.env` 文件会丢失，恢复为环境变量值
+
+**建议**：基础配置填在环境变量，临时调试通过后台管理。
+
+### 后期优化方向（配置持久化）
+
+如需后台调整的配置永久保存，需要：
+1. 开通**云开发数据库**（MongoDB）
+2. 将配置存储在数据库中而非本地文件
+3. 启动时从数据库读取配置覆盖环境变量
+
+参考实现：`app/config.py` 添加数据库读取逻辑，工作量大但可行。
+
+> **当前阶段**：先用环境变量方案，快速上线验证。用户量大或配置频繁变更时，再考虑数据库持久化改造。
 
 ---
 
